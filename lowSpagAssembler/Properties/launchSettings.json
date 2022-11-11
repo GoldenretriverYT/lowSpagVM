@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "lowSpagAssembler": {
+      "commandName": "Project",
+      "commandLineArgs": "test.asm out.bin"
+    }
+  }
+}
