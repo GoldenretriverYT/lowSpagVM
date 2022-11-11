@@ -19,23 +19,23 @@ namespace libLowSpagVM
 
         public byte Read(uint addr)
         {
-            if (addr > size) return Read(addr - size);
+            if (addr > size) throw new Exception("Out of bounds read!");
 
             return data[addr];
         }
 
         public byte[] Read(uint addr, int readSize)
         {
-            if (addr + readSize > size) return Read(addr - size, readSize);
+            if (addr + readSize > size) throw new Exception("Out of bounds read!");
 
-            byte[] data = new byte[readSize];
+            byte[] resData = new byte[readSize];
 
             for(var offset = 0; offset < readSize; offset++)
             {
-                data[offset] = data[addr + offset];
+                resData[offset] = data[addr + offset];
             }
 
-            return data;
+            return resData;
         }
 
         public void Set(uint addr, byte val)

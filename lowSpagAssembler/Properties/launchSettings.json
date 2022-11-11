@@ -2,7 +2,7 @@
   "profiles": {
     "lowSpagAssembler": {
       "commandName": "Project",
-      "commandLineArgs": "test.asm out.bin"
+      "commandLineArgs": "test.asm ../../../../lowSpagVM/bin/Debug/net6.0/out.bin"
     }
   }
 }

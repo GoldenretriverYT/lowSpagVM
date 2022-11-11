@@ -20,6 +20,7 @@ namespace lowSpagAssembler
 
         public void Emit(byte[] dest, int addr)
         {
+            Console.WriteLine($"Emitting {Type} {Data[0]} {Data[1]} {Data[2]} at {addr}");
             dest[addr] = (byte)Type;
             dest[addr + 1] = Data[0];
             dest[addr + 2] = Data[1];

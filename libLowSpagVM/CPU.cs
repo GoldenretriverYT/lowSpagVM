@@ -1,11 +1,12 @@
 ﻿using LowSpagVM.Common;
+using System.Diagnostics;
 
 namespace libLowSpagVM
 {
     public class CPU
     {
         public const int REGISTER_COUNT = 16;
-        public const int MEMORY_SIZE = 32767;
+        public const ushort MEMORY_SIZE = 32767;
 
         public Memory Memory { get; set; }
         public byte[] Registers { get; init; }
@@ -30,6 +31,15 @@ namespace libLowSpagVM
             Registers = new byte[REGISTER_COUNT];
         }
 
+        public void Run()
+        {
+            while(true)
+            {
+                if (pc+4 >= MEMORY_SIZE) break;
+                Cycle();
+            }
+        }
+
         public void Cycle()
         {
             var instType = (InstructionType)Memory.Read(pc);
@@ -39,12 +49,20 @@ namespace libLowSpagVM
                 throw new Exception("VM Fatal: Instruction " + instType + " is not implemented.");
             }
 
+            if(instType != InstructionType.NOP) Debug.WriteLine($"Executing {instType} : [{string.Join(", ", Memory.Read(pc, 4))}]");
+
             Instructions.CPUInstructions[instType].Execute(this, Memory.Read(pc, 4));
         }
 
-        public void IncreasePC(uint v)
+        public void IncreasePC(ushort v)
         {
             pc += v;
+        }
+
+        public void Jump(ushort v)
+        {
+            Debug.WriteLine($"Jumping to {v}");
+            pc = v;
         }
     }
 }
