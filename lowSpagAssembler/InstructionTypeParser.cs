@@ -70,6 +70,14 @@ namespace lowSpagAssembler
                     return new Instruction(type, new byte[] { val, reg1, 0 });
                 #endregion Data
 
+                #region Special Instructions
+                case InstructionType.PRINTN:
+                case InstructionType.PRINTA:
+                    reg1 = TryParseRegister(args[0]);
+
+                    return new Instruction(type, new byte[] { reg1, 0, 0 });
+                #endregion
+
                 default:
                     throw new Exception("InstructionType parser not implemented yet!");
             }

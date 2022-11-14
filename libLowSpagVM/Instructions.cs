@@ -28,6 +28,11 @@ namespace libLowSpagVM
             // data
             { InstructionType.STRBYTE, new(InstStrByte, InstructionType.STRBYTE) },
 
+            // special
+            {InstructionType.PRINTN, new(InstPrintNumber, InstructionType.PRINTN) },
+            {InstructionType.PRINTA, new(InstPrintAscii, InstructionType.PRINTA) },
+
+
         };
         
         public static void InstNop(CPU cpu, byte[] instruction)
@@ -92,6 +97,24 @@ namespace libLowSpagVM
 
             cpu.IncreasePC(4);
         }
+        #endregion
+
+        #region Special Instructions
+
+        public static void InstPrintNumber(CPU cpu, byte[] instruction)
+        {
+            Console.Write(cpu.Registers[instruction[1]]);
+
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstPrintAscii(CPU cpu, byte[] instruction)
+        {
+            Console.Write((char)cpu.Registers[instruction[1]]);
+
+            cpu.IncreasePC(4);
+        }
+
         #endregion
 
         private static bool ValidRegister(byte b) => b < CPU.REGISTER_COUNT;

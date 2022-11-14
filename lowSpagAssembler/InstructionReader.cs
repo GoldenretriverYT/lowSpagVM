@@ -32,14 +32,14 @@ namespace lowSpagAssembler
                     continue;
                 }
 
-                offset += 4;
-
                 if (line.EndsWith(":"))
                 {
                     var label = line.Split(":")[0];
-                    Labels.Add(label, (ushort)(offset-4));
+                    Labels.Add(label, (ushort)(offset));
                     continue;
                 }
+
+                offset += 4;
             }
 
             foreach(var line in lines)

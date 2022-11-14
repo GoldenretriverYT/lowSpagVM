@@ -4,7 +4,7 @@
     {
         NOP = 0x00,
 
-        #region Arithmetics
+        #region Arithmetics 0x1?
         ADD = 0x10,
         SUB = 0x11,
         DIV = 0x13,
@@ -13,7 +13,7 @@
 
         #endregion
 
-        #region Flow
+        #region Flow 0x2?
 
         /// <summary>
         /// Jumps if the register is 0. Bytes: JMPIZ REG1 MEM_ADDR(2b)
@@ -36,7 +36,7 @@
 
         #endregion
 
-        #region Data
+        #region Data 0x3?
 
         // data
         /// <summary>
@@ -56,6 +56,17 @@
         /// </summary>
         STRBYTE = 0x33,
 
+        #endregion
+
+        #region Special Instructions 0x7?, 0x8?
+        /// <summary>
+        /// Prints the numeric value of a register. Bytes: PRNTN REG1
+        /// </summary>
+        PRINTN = 0x70,
+        /// <summary>
+        /// Prints the value converted to an ASCII char of a register. Bytes: PRNTA REG1
+        /// </summary>
+        PRINTA = 0x71
         #endregion
     }
 }
