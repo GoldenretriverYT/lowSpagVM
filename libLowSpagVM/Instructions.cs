@@ -26,6 +26,8 @@ namespace libLowSpagVM
 
 
             // data
+            { InstructionType.STR, new(InstStr, InstructionType.STR) },
+            { InstructionType.LD, new(InstLd, InstructionType.LD) },
             { InstructionType.STRBYTE, new(InstStrByte, InstructionType.STRBYTE) },
 
             // special
@@ -97,6 +99,19 @@ namespace libLowSpagVM
 
             cpu.IncreasePC(4);
         }
+
+        public static void InstStr(CPU cpu, byte[] instruction) {
+            cpu.Memory.Set(BitConverter.ToUInt16(new byte[] { instruction[2], instruction[3] }), cpu.Registers[instruction[1]]);
+
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstLd(CPU cpu, byte[] instruction) {
+            cpu.Registers[instruction[1]] = cpu.Memory.Read(BitConverter.ToUInt16(new byte[] { instruction[2], instruction[3] }));
+
+            cpu.IncreasePC(4);
+        }
+
         #endregion
 
         #region Special Instructions

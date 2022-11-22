@@ -49,7 +49,7 @@ namespace lowSpagAssembler
                     continue;
                 }
 
-                var inst = ParseLine(line, this);
+                var inst = ParseLine(line.Trim(), this);
                 output.Add(inst);
             }
 
