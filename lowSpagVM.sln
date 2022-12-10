@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LowSpagVM.Common", "LowSpag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lowSpagAssembler", "lowSpagAssembler\lowSpagAssembler.csproj", "{260473FA-74C7-4C20-A399-DE23A663DD7B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{6E74DAF9-5A34-49CA-AAFC-A69B0491378E}"
+	ProjectSection(SolutionItems) = preProject
+		SimpleTest.asm = SimpleTest.asm
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

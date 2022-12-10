@@ -23,13 +23,13 @@ namespace lowSpagAssembler
         {
             var output = new List<Instruction>();
 
-            var lines = Code.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries);
+            var lines = Code.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             ushort offset = 4; // 4 as the code always starts with a JMP that skips constants
 
             // Read labels and constants first
             foreach (var line in lines)
             {
-                if (string.IsNullOrWhiteSpace(line))
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
                 {
                     continue;
                 }
@@ -75,9 +75,9 @@ namespace lowSpagAssembler
                     continue;
                 }
 
-                if (line.Trim().EndsWith(":"))
+                if (line.EndsWith(":"))
                 {
-                    var label = line.Trim().Split(":")[0];
+                    var label = line.Split(":")[0];
                     Labels.Add(label, (ushort)(offset));
                     continue;
                 }
@@ -87,12 +87,12 @@ namespace lowSpagAssembler
 
             foreach(var line in lines)
             {
-                if (line.Trim().EndsWith(":") || line.StartsWith("CONST") || string.IsNullOrWhiteSpace(line))
+                if (line.EndsWith(":") || line.StartsWith("CONST") || line.StartsWith("#") || string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
 
-                var inst = ParseLine(line.Trim(), this);
+                var inst = ParseLine(line, this);
                 output.Add(inst);
             }
 
