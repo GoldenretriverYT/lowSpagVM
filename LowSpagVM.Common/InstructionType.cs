@@ -66,7 +66,10 @@
         /// <summary>
         /// Prints the value converted to an ASCII char of a register. Bytes: PRNTA REG1
         /// </summary>
-        PRINTA = 0x71
+        PRINTA = 0x71,
+        #endregion
+
+        #region Compile-Time Instructions 0xF?
         #endregion
     }
 }

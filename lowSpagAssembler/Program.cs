@@ -21,7 +21,11 @@
 
             var insts = reader.ReadInstructions();
             var output = new byte[insts.Count * 4];
-            var off = 0;
+            var off = 4;
+
+            byte[] constsOffset = BitConverter.GetBytes(reader.TotalConstantSize + 4);
+            var constsOffsetInstruction = new Instruction(LowSpagVM.Common.InstructionType.JMP, new byte[] { constsOffset[0], constsOffset[1], 0 });
+            insts.Add(constsOffsetInstruction);
 
             foreach(var inst in insts)
             {

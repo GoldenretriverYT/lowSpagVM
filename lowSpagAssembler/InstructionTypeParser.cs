@@ -78,6 +78,9 @@ namespace lowSpagAssembler
                     return new Instruction(type, new byte[] { reg1, 0, 0 });
                 #endregion
 
+                #region Compile-Time Instructions
+                #endregion
+
                 default:
                     throw new Exception("InstructionType parser not implemented yet!");
             }
@@ -109,7 +112,19 @@ namespace lowSpagAssembler
                 {
                     throw new Exception("Unknown label!");
                 }
-            }else
+            }else if(arg1.StartsWith("#h")) {
+                string memAddr = arg1.Split("#h")[1];
+
+                if (memAddr.Length != 2) throw new Exception("Invalid address #h" + memAddr);
+
+                return (Convert.ToByte(memAddr[0].ToString(), 16), Convert.ToByte(memAddr[1].ToString(), 16));
+            } else if (arg1.StartsWith("#")) {
+                string memAddr = arg1.Split('#')[1];
+
+                if (memAddr.Length != 2) throw new Exception("Invalid address #" + memAddr);
+
+                return (Convert.ToByte(memAddr[0].ToString(), 16), Convert.ToByte(memAddr[1].ToString(), 16));
+            } else
             {
                 if (!short.TryParse(arg1, out var shrt)) throw new Exception("Invalid address!");
                 var bytes = BitConverter.GetBytes(shrt);

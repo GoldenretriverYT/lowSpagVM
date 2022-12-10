@@ -11,6 +11,8 @@ namespace lowSpagAssembler
     {
         public string Code { get; }
         public Dictionary<string, ushort> Labels { get; } = new();
+        public Dictionary<string, ushort> Constants { get; } = new();
+        public ushort TotalConstantSize = 0;
 
         public InstructionReader(string code)
         {
@@ -22,13 +24,46 @@ namespace lowSpagAssembler
             var output = new List<Instruction>();
 
             var lines = Code.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries);
-            ushort offset = 0;
+            ushort offset = 4; // 4 as the code always starts with a JMP that skips constants
 
             // Read labels and constants first
             foreach (var line in lines)
             {
                 if (string.IsNullOrWhiteSpace(line))
                 {
+                    continue;
+                }
+
+                if (line.StartsWith("CONST")) {
+                    string[] args = line.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    string[] constTypeArgs = args[0].Split(".");
+
+                    if (args.Length < 2) throw new Exception("Invalid constant definition");
+                    if (constTypeArgs.Length < 2) throw new Exception("Invalid constant definition");
+
+                    string constType = constTypeArgs[1];
+
+                    switch(constType) {
+                        case "STR": {
+
+                            break;
+                        }
+
+                        case "STRNT": {
+
+                            break;
+                        }
+
+                        case "BIN": {
+
+                            break;
+                        }
+
+                        default: {
+                            throw new Exception($"Unknown constant definition type '{constType}'");
+                        }
+                    }
+
                     continue;
                 }
 
@@ -44,7 +79,7 @@ namespace lowSpagAssembler
 
             foreach(var line in lines)
             {
-                if (line.EndsWith(":") || string.IsNullOrWhiteSpace(line))
+                if (line.EndsWith(":") || line.StartsWith("CONST") || string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
