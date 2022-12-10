@@ -40,21 +40,38 @@
 
         // data
         /// <summary>
-        /// Writes from memory to register. Bytes: STR REG1 MEM_ADDR(2b)
+        /// Writes from register to memory. Bytes: STR REG1
         /// </summary>
         STR = 0x30,
         /// <summary>
-        /// Reads from register to memory. Bytes: LD REG1 MEM_ADDR(2b)
+        /// Writes from memory to register. Bytes: LD REG1
         /// </summary>
         LD = 0x31,
         /// <summary>
-        /// Stores value to memory. Bytes: MEMSTR VAL MEM_ADDR(2b)
+        /// Stores value to memory. Bytes: MEMSTR VAL
         /// </summary>
         MEMSTR = 0x32,
         /// <summary>
         /// Stores value to register. Bytes: STRBYTE VAL REG1
         /// </summary>
         STRBYTE = 0x33,
+
+        /// <summary>
+        /// Increases the memory pointer by 1
+        /// </summary>
+        MPTR_INC = 0x34,
+        /// <summary>
+        /// Decreases the memory pointer by 1
+        /// </summary>
+        MPTR_DEC = 0x35,
+        /// <summary>
+        /// Sets the memory pointer. Bytes: MPTR_SET (memory addr (2b))
+        /// </summary>
+        MPTR_SET = 0x36,
+        /// <summary>
+        /// Sets the memory pointer from registers. Bytes: MPTR_SETREG REG1(LSB) REG2(MSB) 
+        /// </summary>
+        MPTR_SETREG = 0x37,
 
         #endregion
 

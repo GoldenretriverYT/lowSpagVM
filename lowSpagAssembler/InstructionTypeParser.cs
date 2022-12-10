@@ -55,19 +55,30 @@ namespace lowSpagAssembler
                 case InstructionType.STR:
                 case InstructionType.LD:
                     reg1 = TryParseRegister(args[0]);
-                    (memb1, memb2) = TryReadMemoryAddress(args[1]);
 
-                    return new Instruction(type, new byte[] { reg1, memb1, memb2 });
+                    return new Instruction(type, new byte[] { reg1, 0, 0 });
                 case InstructionType.MEMSTR:
                     val = TryParseByte(args[0]);
-                    (memb1, memb2) = TryReadMemoryAddress(args[1]);
 
-                    return new Instruction(type, new byte[] { val, memb1, memb2 });
+                    return new Instruction(type, new byte[] { val, 0, 0 });
                 case InstructionType.STRBYTE:
                     val = TryParseByte(args[0]);
                     reg1 = TryParseRegister(args[1]);
 
                     return new Instruction(type, new byte[] { val, reg1, 0 });
+
+                case InstructionType.MPTR_INC:
+                case InstructionType.MPTR_DEC:
+                    return new Instruction(type, new byte[] { 0, 0, 0 });
+                case InstructionType.MPTR_SET:
+                    (memb1, memb2) = TryReadMemoryAddress(args[1]);
+
+                    return new Instruction(type, new byte[] { memb1, memb2, 0 });
+                case InstructionType.MPTR_SETREG:
+                    reg1 = TryParseRegister(args[0]);
+                    reg2 = TryParseRegister(args[1]);
+
+                    return new Instruction(type, new byte[] { reg1, reg2, 0 });
                 #endregion Data
 
                 #region Special Instructions

@@ -29,6 +29,10 @@ namespace libLowSpagVM
             { InstructionType.STR, new(InstStr, InstructionType.STR) },
             { InstructionType.LD, new(InstLd, InstructionType.LD) },
             { InstructionType.STRBYTE, new(InstStrByte, InstructionType.STRBYTE) },
+            { InstructionType.MPTR_INC, new(InstMptrInc, InstructionType.MPTR_INC) },
+            { InstructionType.MPTR_DEC, new(InstMptrDec, InstructionType.MPTR_DEC) },
+            { InstructionType.MPTR_SET, new(InstMptrSet, InstructionType.MPTR_SET) },
+            { InstructionType.MPTR_SETREG, new(InstMptrSetReg, InstructionType.MPTR_SETREG) },
 
             // special
             {InstructionType.PRINTN, new(InstPrintNumber, InstructionType.PRINTN) },
@@ -101,14 +105,34 @@ namespace libLowSpagVM
         }
 
         public static void InstStr(CPU cpu, byte[] instruction) {
-            cpu.Memory.Set(BitConverter.ToUInt16(new byte[] { instruction[2], instruction[3] }), cpu.Registers[instruction[1]]);
+            cpu.Memory.Set(cpu.MemoryPtr, cpu.Registers[instruction[1]]);
 
             cpu.IncreasePC(4);
         }
 
         public static void InstLd(CPU cpu, byte[] instruction) {
-            cpu.Registers[instruction[1]] = cpu.Memory.Read(BitConverter.ToUInt16(new byte[] { instruction[2], instruction[3] }));
+            cpu.Registers[instruction[1]] = cpu.Memory.Read(cpu.MemoryPtr);
 
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstMptrInc(CPU cpu, byte[] instruction) {
+            cpu.MemoryPtr++;
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstMptrDec(CPU cpu, byte[] instruction) {
+            cpu.MemoryPtr--;
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstMptrSet(CPU cpu, byte[] instruction) {
+            cpu.MemoryPtr = BitConverter.ToUInt16(instruction[1..3]);
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstMptrSetReg(CPU cpu, byte[] instruction) {
+            cpu.MemoryPtr = BitConverter.ToUInt16(new byte[] { cpu.Registers[instruction[1]], cpu.Registers[instruction[2]] });
             cpu.IncreasePC(4);
         }
 

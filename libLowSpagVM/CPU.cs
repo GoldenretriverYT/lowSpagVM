@@ -10,6 +10,8 @@ namespace libLowSpagVM
 
         public Memory Memory { get; set; }
         public byte[] Registers { get; init; }
+        public ushort MemoryPtr { get; set; } = 0;
+
         private uint pc = 0;
 
         public static CPU Load(byte[] file)
