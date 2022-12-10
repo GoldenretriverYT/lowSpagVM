@@ -38,19 +38,27 @@ namespace lowSpagAssembler
                     string[] args = line.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                     string[] constTypeArgs = args[0].Split(".");
 
-                    if (args.Length < 2) throw new Exception("Invalid constant definition");
+                    if (args.Length < 3) throw new Exception("Invalid constant definition");
                     if (constTypeArgs.Length < 2) throw new Exception("Invalid constant definition");
 
                     string constType = constTypeArgs[1];
 
                     switch(constType) {
                         case "STR": {
+                            string dataStr = string.Join(' ', args.Skip(2));
+                            byte[] data = Encoding.ASCII.GetBytes(dataStr + '\0');
+                            ushort size = (ushort)RoundUp(data.Length, 4);
 
-                            break;
-                        }
+                            byte[] finalData = new byte[size];
+                            Buffer.BlockCopy(data, 0, finalData, 0, data.Length);
 
-                        case "STRNT": {
+                            var inst = new Instruction(InstructionType.NOP, finalData, true); 
 
+                            Constants[args[1]] = (ushort)(offset);
+
+                            offset += size;
+                            TotalConstantSize += size;
+                            output.Add(inst);
                             break;
                         }
 
@@ -67,9 +75,9 @@ namespace lowSpagAssembler
                     continue;
                 }
 
-                if (line.EndsWith(":"))
+                if (line.Trim().EndsWith(":"))
                 {
-                    var label = line.Split(":")[0];
+                    var label = line.Trim().Split(":")[0];
                     Labels.Add(label, (ushort)(offset));
                     continue;
                 }
@@ -79,7 +87,7 @@ namespace lowSpagAssembler
 
             foreach(var line in lines)
             {
-                if (line.EndsWith(":") || line.StartsWith("CONST") || string.IsNullOrWhiteSpace(line))
+                if (line.Trim().EndsWith(":") || line.StartsWith("CONST") || string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
@@ -104,6 +112,10 @@ namespace lowSpagAssembler
             if(!Enum.TryParse<InstructionType>(instruction.ToUpperInvariant(), out var instType)) throw new Exception("Parsing failure: Unknown instruction type");
 
             return InstructionTypeParser.ParseArguments(instType, (parts.Length > 1 ? args : new string[0]), reader);
+        }
+
+        private int RoundUp(int n, int m) {
+            return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m;
         }
     }
 }

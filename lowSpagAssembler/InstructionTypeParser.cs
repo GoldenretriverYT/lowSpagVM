@@ -71,7 +71,7 @@ namespace lowSpagAssembler
                 case InstructionType.MPTR_DEC:
                     return new Instruction(type, new byte[] { 0, 0, 0 });
                 case InstructionType.MPTR_SET:
-                    (memb1, memb2) = TryReadMemoryAddress(args[1]);
+                    (memb1, memb2) = TryReadMemoryAddress(args[0]);
 
                     return new Instruction(type, new byte[] { memb1, memb2, 0 });
                 case InstructionType.MPTR_SETREG:
@@ -115,12 +115,13 @@ namespace lowSpagAssembler
             {
                 string lbl = arg1.Split('$')[1];
 
-                if(reader.Labels.ContainsKey(lbl))
-                {
+                if (reader.Labels.ContainsKey(lbl)) {
                     var bytes = BitConverter.GetBytes(reader.Labels[lbl]);
                     return (bytes[0], bytes[1]);
-                }else
-                {
+                } else if (reader.Constants.ContainsKey(lbl)) {
+                    var bytes = BitConverter.GetBytes(reader.Constants[lbl]);
+                    return (bytes[0], bytes[1]);
+                } else {
                     throw new Exception("Unknown label!");
                 }
             }else if(arg1.StartsWith("#h")) {

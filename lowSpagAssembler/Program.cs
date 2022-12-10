@@ -23,7 +23,7 @@
 
             byte[] constsOffset = BitConverter.GetBytes(reader.TotalConstantSize + 4); // Add SKIP CONSTANTS jmp instructions
             var constsOffsetInstruction = new Instruction(LowSpagVM.Common.InstructionType.JMP, new byte[] { constsOffset[0], constsOffset[1], 0 });
-            insts.Add(constsOffsetInstruction);
+            insts.Insert(0, constsOffsetInstruction);
 
             var output = new byte[insts.Sum((el) => el.GetEmittedSize())];
             var off = 0;
