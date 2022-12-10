@@ -20,17 +20,17 @@
             var reader = new InstructionReader(File.ReadAllText(args[0]));
 
             var insts = reader.ReadInstructions();
-            var output = new byte[insts.Count * 4];
-            var off = 4;
 
-            byte[] constsOffset = BitConverter.GetBytes(reader.TotalConstantSize + 4);
+            byte[] constsOffset = BitConverter.GetBytes(reader.TotalConstantSize + 4); // Add SKIP CONSTANTS jmp instructions
             var constsOffsetInstruction = new Instruction(LowSpagVM.Common.InstructionType.JMP, new byte[] { constsOffset[0], constsOffset[1], 0 });
-            insts.Add(constsOffsetInstruction);
+            insts.Insert(0, constsOffsetInstruction);
 
-            foreach(var inst in insts)
+            var output = new byte[insts.Sum((el) => el.GetEmittedSize())];
+            var off = 0;
+
+            foreach (var inst in insts)
             {
-                inst.Emit(output, off);
-                off += 4;
+                off += inst.Emit(output, off);
             }
 
             File.WriteAllBytes(args[1], output);

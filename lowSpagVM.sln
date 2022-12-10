@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lowSpagVM", "lowSpagVM\lowSpagVM.csproj", "{771E82E1-7316-4B2E-A089-982BC419C6F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lowSpagVM", "lowSpagVM\lowSpagVM.csproj", "{771E82E1-7316-4B2E-A089-982BC419C6F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libLowSpagVM", "libLowSpagVM\libLowSpagVM.csproj", "{6D9B2611-3AA1-4C28-9A72-7F302072289F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libLowSpagVM", "libLowSpagVM\libLowSpagVM.csproj", "{6D9B2611-3AA1-4C28-9A72-7F302072289F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LowSpagVM.Common", "LowSpagVM.Common\LowSpagVM.Common.csproj", "{8F7A0CE6-EC74-41C4-B8F6-AB48095A8928}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LowSpagVM.Common", "LowSpagVM.Common\LowSpagVM.Common.csproj", "{8F7A0CE6-EC74-41C4-B8F6-AB48095A8928}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lowSpagAssembler", "lowSpagAssembler\lowSpagAssembler.csproj", "{260473FA-74C7-4C20-A399-DE23A663DD7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lowSpagAssembler", "lowSpagAssembler\lowSpagAssembler.csproj", "{260473FA-74C7-4C20-A399-DE23A663DD7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
