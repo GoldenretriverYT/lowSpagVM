@@ -55,25 +55,25 @@ namespace libLowSpagVM
             }
 
             cpu.Registers[0xF] = (byte)(cpu.Registers[instruction[1]] + cpu.Registers[instruction[2]]);
-            Debug.WriteLine($"Add Result: {cpu.Registers[0xF]}");
+            LSDbg.WriteLine($"Add Result: {cpu.Registers[0xF]}");
             cpu.IncreasePC(4);
         }
         public static void InstSub(CPU cpu, byte[] instruction)
         {
             cpu.Registers[0xF] = (byte)(cpu.Registers[instruction[1]] - cpu.Registers[instruction[2]]);
-            Debug.WriteLine($"Sub Result: {cpu.Registers[0xF]}");
+            LSDbg.WriteLine($"Sub Result: {cpu.Registers[0xF]}");
             cpu.IncreasePC(4);
         }
         public static void InstMul(CPU cpu, byte[] instruction)
         {
             cpu.Registers[0xF] = (byte)(cpu.Registers[instruction[1]] * cpu.Registers[instruction[2]]);
-            Debug.WriteLine($"Mul Result: {cpu.Registers[0xF]}");
+            LSDbg.WriteLine($"Mul Result: {cpu.Registers[0xF]}");
             cpu.IncreasePC(4);
         }
         public static void InstDiv(CPU cpu, byte[] instruction)
         {
             cpu.Registers[0xF] = (byte)(cpu.Registers[instruction[1]] / cpu.Registers[instruction[2]]);
-            Debug.WriteLine($"Div Result: {cpu.Registers[0xF]}");
+            LSDbg.WriteLine($"Div Result: {cpu.Registers[0xF]}");
             cpu.IncreasePC(4);
         }
         #endregion
@@ -81,7 +81,7 @@ namespace libLowSpagVM
         #region Flow Instructions
         public static void InstSkipEqu(CPU cpu, byte[] instruction)
         {
-            Debug.WriteLine($"Equality check: {cpu.Registers[instruction[1]]} == {cpu.Registers[instruction[2]]}");
+            LSDbg.WriteLine($"Equality check: {cpu.Registers[instruction[1]]} == {cpu.Registers[instruction[2]]}");
             if (cpu.Registers[instruction[1]] == cpu.Registers[instruction[2]]) cpu.IncreasePC(4);
 
             cpu.IncreasePC(4);

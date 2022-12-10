@@ -51,7 +51,7 @@ namespace libLowSpagVM
                 throw new Exception("VM Fatal: Instruction " + instType + " is not implemented.");
             }
 
-            if(instType != InstructionType.NOP) Debug.WriteLine($"Executing {instType} : [{string.Join(", ", Memory.Read(pc, 4))}]");
+            if(instType != InstructionType.NOP) LSDbg.WriteLine($"Executing {instType} : [{string.Join(", ", Memory.Read(pc, 4))}]");
 
             Instructions.CPUInstructions[instType].Execute(this, Memory.Read(pc, 4));
         }
@@ -63,7 +63,7 @@ namespace libLowSpagVM
 
         public void Jump(ushort v)
         {
-            Debug.WriteLine($"Jumping to {v}");
+            LSDbg.WriteLine($"Jumping to {v}");
             pc = v;
         }
     }
