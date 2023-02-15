@@ -14,7 +14,7 @@ namespace lowSpagAssembler
         public static Instruction ParseArguments(InstructionType type, string[] args, InstructionReader reader)
         {
             InstructionTypeParser.reader = reader;
-            byte reg1, reg2, memb1, memb2, val;
+            byte reg1 = 0, reg2 = 0, memb1, memb2, val;
 
             switch(type)
             {
@@ -87,6 +87,12 @@ namespace lowSpagAssembler
                     reg1 = TryParseRegister(args[0]);
 
                     return new Instruction(type, new byte[] { reg1, 0, 0 });
+                case InstructionType.SYSCALL:
+                    var sysCallId = TryParseByte(args[0]);
+                    if(args.Length > 1) reg1 = TryParseRegister(args[1]);
+                    if (args.Length > 2) reg2 = TryParseRegister(args[2]);
+
+                    return new Instruction(type, new byte[] { sysCallId, reg1, reg2});
                 #endregion
 
                 #region Compile-Time Instructions

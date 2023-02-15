@@ -23,6 +23,8 @@ namespace lowSpagVM
 
             CPU cpu = CPU.Load(File.ReadAllBytes(args[0]));
             cpu.Run();
+
+            Console.WriteLine("\n\nRegisters: ");
             Console.WriteLine(string.Join(", ", cpu.Registers));
         }
     }

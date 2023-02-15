@@ -38,7 +38,7 @@ namespace libLowSpagVM
             {InstructionType.PRINTN, new(InstPrintNumber, InstructionType.PRINTN) },
             {InstructionType.PRINTA, new(InstPrintAscii, InstructionType.PRINTA) },
 
-
+            {InstructionType.SYSCALL, new(InstSyscall, InstructionType.SYSCALL) }
         };
         
         public static void InstNop(CPU cpu, byte[] instruction)
@@ -150,6 +150,50 @@ namespace libLowSpagVM
         public static void InstPrintAscii(CPU cpu, byte[] instruction)
         {
             Console.Write((char)cpu.Registers[instruction[1]]);
+
+            cpu.IncreasePC(4);
+        }
+
+        public static void InstSyscall(CPU cpu, byte[] instruction)
+        {
+            byte syscallId = instruction[1];
+            byte reg1 = instruction[2];
+            byte reg2 = instruction[3];
+
+            switch(syscallId)
+            {
+                case 0x00: // In this implementation, 0x00 is SetConsoleForegroundColor
+                    byte colorIdx = cpu.Registers[reg1];
+
+                    if(colorIdx >= 30 && colorIdx <= 37 || colorIdx >= 90 && colorIdx <= 97)
+                    {
+                        // write ansi escape code
+                        Console.Write("\x1b[" + colorIdx + "m");
+                    }
+                    break;
+
+                case 0x01: // 0x01 is SetConsoleBackgroundColor
+                    colorIdx = cpu.Registers[reg1];
+
+                    if (colorIdx >= 40 && colorIdx <= 47 || colorIdx >= 100 && colorIdx <= 107)
+                    {
+                        // write ansi escape code
+                        Console.Write("\x1b[" + colorIdx + "m");
+                    }
+                    break;
+                case 0x02: // Print string - extracts the whole string from memPtr (until 0x00)
+                    uint memPtr = cpu.MemoryPtr;
+                    string str = "";
+
+                    while(cpu.Memory.Read(memPtr) != 0x00)
+                    {
+                        str += (char)cpu.Memory.Read(memPtr);
+                        memPtr++;
+                    }
+
+                    Console.Write(str);
+                    break;
+            }
 
             cpu.IncreasePC(4);
         }

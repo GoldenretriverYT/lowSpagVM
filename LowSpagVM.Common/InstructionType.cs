@@ -75,7 +75,7 @@
 
         #endregion
 
-        #region Special Instructions 0x7?, 0x8?
+        #region Special Instructions 0x7? (required), 0x8? (implementation optional)
         /// <summary>
         /// Prints the numeric value of a register. Bytes: PRNTN REG1
         /// </summary>
@@ -84,6 +84,12 @@
         /// Prints the value converted to an ASCII char of a register. Bytes: PRNTA REG1
         /// </summary>
         PRINTA = 0x71,
+        
+        /// <summary>
+        /// SysCall to the VM to do something. Bytes: SYSCALL SYSCALL_ID REGARG1 REGARG2
+        /// Warning: The implementation is not required to support this instruction. Additionally, syscalls vary from VM to VM.
+        /// </summary>
+        SYSCALL = 0x80,
         #endregion
 
         #region Compile-Time Instructions 0xF?
