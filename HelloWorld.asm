@@ -6,7 +6,7 @@ MPTR_SET $HW                # Set the memory pointer to our Hello World constant
 print:
   STRBYTE 0, 1              # Store a NULL byte into register 1 to check if the current char is \0
   LD 0                      # Load the next character into register 0
-  SKEQU 0,1                 # If register 0 and 1 are the same, skip the next line
+  SKPEQU 0,1                 # If register 0 and 1 are the same, skip the next line
     JMP $printChar          # They are not the same, which means that the next character isn't a NULL byte
   JMP $newline              # We didn't jump to $printChar, therefore the next byte is a NULL byte
   
