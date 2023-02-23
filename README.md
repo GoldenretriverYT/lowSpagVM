@@ -27,8 +27,8 @@ There are 16 registers. 15 is the **Ar**itmetic **R**esult Register but can obvi
 Technically, up to 255 registers could be supported, but the assembler will not allow you to use more than 16 as most implementations of lowSpag only allocate 16 registers.
 
 ### Syscalls
-There is a syscall instruction. Whilst this is a 0x8? instruction and therefore not required to be implemented.<br>
-Syscall ids are also not "standardized", but following are recommend (if not implemented, just ignore):
+There is a syscall instruction. Whilst this is a 0x8_ instruction and therefore not required to be implemented.<br>
+Syscall ids are also not "standardized", but following are recommend (if not implemented, just ignore):<br>
  -> 0x00: SetConsoleForegroundColor (0-15) - Only to affect the next characters printed
  -> 0x01: SetConsoleBackgroundColor (0-15) - Only to affect the next characters printed
  -> 0x02: PrintString - Prints a string from memory at memPtr until null byte
