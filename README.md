@@ -29,6 +29,6 @@ Technically, up to 255 registers could be supported, but the assembler will not 
 ### Syscalls
 There is a syscall instruction. Whilst this is a 0x8_ instruction and therefore not required to be implemented.<br>
 Syscall ids are also not "standardized", but following are recommend (if not implemented, just ignore):<br>
- -> 0x00: SetConsoleForegroundColor (0-15) - Only to affect the next characters printed
- -> 0x01: SetConsoleBackgroundColor (0-15) - Only to affect the next characters printed
- -> 0x02: PrintString - Prints a string from memory at memPtr until null byte
+ - 0x00: SetConsoleForegroundColor (0-15) - Only to affect the next characters printed
+ - 0x01: SetConsoleBackgroundColor (0-15) - Only to affect the next characters printed
+ - 0x02: PrintString - Prints a string from memory at memPtr until null byte
