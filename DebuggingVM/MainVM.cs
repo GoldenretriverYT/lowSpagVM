@@ -10,8 +10,8 @@ namespace DebuggingVM {
         public uint DisassembledStart = 0;
         public (uint, uint) DisassembledConstantsRange = (0, 0); // Automatically inferred from first instruction
 
-        private bool done = false, singleStep = false;
-        
+        private bool done = false, singleStep = false, isBreakpoint = false;
+
         public MainVM() {
             InitializeComponent();
             
@@ -37,15 +37,17 @@ namespace DebuggingVM {
         private void InitCPU() {
             done = false;
             outputTextBox.Text = "";
-            
+
             try {
                 CPU = CPU.Load(File.ReadAllBytes(openSpagBinDialog.FileName));
 
                 CPU.OnBreakpoint += () => {
+                    isBreakpoint = true;
                     Disassemble();
                 };
                 
                 CPU.AfterCycle += () => {
+                    isBreakpoint = false;
                     dbgStateLabel.Text = "Debugger State: OK";
 
                     if (onlyUpdateInformationDumpOnSingleStepToolStripMenuItem.CheckState == CheckState.Unchecked || singleStep) {
@@ -153,8 +155,8 @@ namespace DebuggingVM {
                 if (IsForConstants) type = "Data";
                 disassembledInstructionsListBox.Items.Add(new ListViewItem(new string[] {type,  "0x" + (DisassembledStart + i * 4).ToString("X4"), inst.it, inst.data}));
 
-                if (CPU.ProgramCounter == (DisassembledStart + i) * 4) {
-                    disassembledInstructionsListBox.Items[i].BackColor = Color.LightGreen;
+                if (CPU.ProgramCounter == ((DisassembledStart + i) * 4)+4) {
+                    disassembledInstructionsListBox.Items[i].BackColor = (isBreakpoint ? Color.Red : Color.LightGreen);
                     disassembledInstructionsListBox.EnsureVisible(i);
                 } else if (IsForConstants) {
                     disassembledInstructionsListBox.Items[i].BackColor = Color.Gray;
