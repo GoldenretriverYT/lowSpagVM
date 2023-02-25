@@ -33,6 +33,11 @@
         /// </summary>
         JMP = 0x22,
 
+        /// <summary>
+        /// Halts execution and triggers a breakpoint if debugger is attached.
+        /// If no debugger is attached, execution will never resume.
+        /// </summary>
+        BREAK = 0x2F,
 
         #endregion
 

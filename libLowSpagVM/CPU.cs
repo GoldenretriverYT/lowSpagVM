@@ -9,9 +9,18 @@ namespace libLowSpagVM
         public const ushort MEMORY_SIZE = 32767;
 
         public Memory Memory { get; set; }
-        public byte[] Registers { get; init; }
         public ushort MemoryPtr { get; set; } = 0;
+        public byte[] Registers { get; init; }
 
+        // Events that can be listened to by a debugger
+        public Action OnBreakpoint { get; set; }
+        public Action AfterCycle { get; set; }
+
+        public InstructionType CurrentInstructionType => (InstructionType)Memory.Read(pc);
+        public byte[] CurrentInstructionBytes => Memory.Read(pc, 4);
+
+
+        internal bool shouldBreak = false;
         private uint pc = 0;
 
         public static CPU Load(byte[] file)
@@ -39,21 +48,26 @@ namespace libLowSpagVM
             {
                 if (pc+4 >= MEMORY_SIZE) break;
                 Cycle();
+                AfterCycle?.Invoke();
+
+                if (shouldBreak) {
+                    OnBreakpoint?.Invoke();
+                    shouldBreak = false;
+                    return; // Stop execution until Run() is called again
+                }
             }
         }
 
         public void Cycle()
         {
-            var instType = (InstructionType)Memory.Read(pc);
-
-            if (!Instructions.CPUInstructions.ContainsKey(instType))
+            if (!Instructions.CPUInstructions.ContainsKey(CurrentInstructionType))
             {
-                throw new Exception("VM Fatal: Instruction " + instType + " is not implemented.");
+                throw new Exception("VM Fatal: Instruction " + CurrentInstructionType + " is not implemented.");
             }
 
-            if(instType != InstructionType.NOP) LSDbg.WriteLine($"Executing {instType} : [{string.Join(", ", Memory.Read(pc, 4))}]");
+            if(CurrentInstructionType != InstructionType.NOP) LSDbg.WriteLine($"Executing {CurrentInstructionType} : [{string.Join(", ", CurrentInstructionBytes)}]");
 
-            Instructions.CPUInstructions[instType].Execute(this, Memory.Read(pc, 4));
+            Instructions.CPUInstructions[CurrentInstructionType].Execute(this, CurrentInstructionBytes);
         }
 
         public void IncreasePC(ushort v)

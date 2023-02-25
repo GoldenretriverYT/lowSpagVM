@@ -10,6 +10,11 @@ namespace libLowSpagVM
 {
     internal class Instructions
     {
+        // These Actions provide an easy way to make libLowSpagVM work with any kind of output
+        public static Action<string> Write { get; set; }
+        public static Action<string> WriteLine { get; set; }
+        
+        
         public static Dictionary<InstructionType, Instruction> CPUInstructions = new Dictionary<InstructionType, Instruction>()
         {
             { InstructionType.NOP, new(InstNop, InstructionType.NOP) },
@@ -19,11 +24,12 @@ namespace libLowSpagVM
             { InstructionType.SUB, new(InstSub, InstructionType.SUB) },
             { InstructionType.MUL, new(InstMul, InstructionType.MUL) },
             { InstructionType.DIV, new(InstDiv, InstructionType.DIV) },
+            { InstructionType.MOD, new(InstMod, InstructionType.MOD) },
 
             // flow
             { InstructionType.SKPEQU, new(InstSkipEqu, InstructionType.SKPEQU) },
             { InstructionType.JMP, new(InstJmp, InstructionType.JMP) },
-
+            { InstructionType.BREAK, new(InstBreak, InstructionType.BREAK) },
 
             // data
             { InstructionType.STR, new(InstStr, InstructionType.STR) },
@@ -76,6 +82,11 @@ namespace libLowSpagVM
             LSDbg.WriteLine($"Div Result: {cpu.Registers[0xF]}");
             cpu.IncreasePC(4);
         }
+        public static void InstMod(CPU cpu, byte[] instruction) {
+            cpu.Registers[0xF] = (byte)(cpu.Registers[instruction[1]] % cpu.Registers[instruction[2]]);
+            LSDbg.WriteLine($"Mod Result: {cpu.Registers[0xF]}");
+            cpu.IncreasePC(4);
+        }
         #endregion
 
         #region Flow Instructions
@@ -91,6 +102,11 @@ namespace libLowSpagVM
         {
             //Console.WriteLine(string.Join(", ", instruction[0..2]));
             cpu.Jump(BitConverter.ToUInt16(instruction[1..3]));
+        }
+
+        public static void InstBreak(CPU cpu, byte[] instruction) {
+            cpu.shouldBreak = true;
+            cpu.IncreasePC(4);
         }
 
         #endregion
@@ -142,14 +158,14 @@ namespace libLowSpagVM
 
         public static void InstPrintNumber(CPU cpu, byte[] instruction)
         {
-            Console.Write(cpu.Registers[instruction[1]]);
+            Write?.Invoke(cpu.Registers[instruction[1]].ToString());
 
             cpu.IncreasePC(4);
         }
 
         public static void InstPrintAscii(CPU cpu, byte[] instruction)
         {
-            Console.Write((char)cpu.Registers[instruction[1]]);
+            Write?.Invoke(((char)cpu.Registers[instruction[1]]).ToString());
 
             cpu.IncreasePC(4);
         }
