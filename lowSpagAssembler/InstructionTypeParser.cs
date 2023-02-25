@@ -48,6 +48,8 @@ namespace lowSpagAssembler
                     (memb1, memb2) = TryReadMemoryAddress(args[0]);
 
                     return new Instruction(type, new byte[] { memb1, memb2, 0 });
+                case InstructionType.BREAK:
+                    return new Instruction(type, new byte[] { 0, 0, 0 });
 
                 #endregion
 
