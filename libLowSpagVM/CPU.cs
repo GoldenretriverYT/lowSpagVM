@@ -15,9 +15,11 @@ namespace libLowSpagVM
         // Events that can be listened to by a debugger
         public Action OnBreakpoint { get; set; }
         public Action AfterCycle { get; set; }
+        public Action ExecutionDone { get; set; }
 
         public InstructionType CurrentInstructionType => (InstructionType)Memory.Read(pc);
         public byte[] CurrentInstructionBytes => Memory.Read(pc, 4);
+        public uint ProgramCounter => pc;
 
 
         internal bool shouldBreak = false;
@@ -28,6 +30,10 @@ namespace libLowSpagVM
             if(file.Length % 4 != 0)
             {
                 throw new Exception("Corrupted executable. Not padded to 4 bytes.");
+            }
+
+            if (file.Length > MEMORY_SIZE) {
+                throw new Exception("Executable exceeds allocated memory. Max size is " + MEMORY_SIZE + " bytes.");
             }
 
             CPU cpu = new CPU();
@@ -56,6 +62,8 @@ namespace libLowSpagVM
                     return; // Stop execution until Run() is called again
                 }
             }
+
+            ExecutionDone?.Invoke();
         }
 
         public void Cycle()

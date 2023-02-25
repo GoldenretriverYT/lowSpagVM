@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace libLowSpagVM
 {
-    internal class Instructions
+    public class Instructions
     {
         // These Actions provide an easy way to make libLowSpagVM work with any kind of output
-        public static Action<string> Write { get; set; }
-        public static Action<string> WriteLine { get; set; }
-        
-        
+        public static Action<string> Write { get; set; } = Console.Write;
+
+
         public static Dictionary<InstructionType, Instruction> CPUInstructions = new Dictionary<InstructionType, Instruction>()
         {
             { InstructionType.NOP, new(InstNop, InstructionType.NOP) },
@@ -184,7 +183,7 @@ namespace libLowSpagVM
                     if(colorIdx >= 30 && colorIdx <= 37 || colorIdx >= 90 && colorIdx <= 97)
                     {
                         // write ansi escape code
-                        Console.Write("\x1b[" + colorIdx + "m");
+                        Write?.Invoke("\x1b[" + colorIdx + "m");
                     }
                     break;
 
@@ -194,7 +193,7 @@ namespace libLowSpagVM
                     if (colorIdx >= 40 && colorIdx <= 47 || colorIdx >= 100 && colorIdx <= 107)
                     {
                         // write ansi escape code
-                        Console.Write("\x1b[" + colorIdx + "m");
+                        Write?.Invoke("\x1b[" + colorIdx + "m");
                     }
                     break;
                 case 0x02: // Print string - extracts the whole string from memPtr (until 0x00)
@@ -207,7 +206,7 @@ namespace libLowSpagVM
                         memPtr++;
                     }
 
-                    Console.Write(str);
+                    Write?.Invoke(str);
                     break;
             }
 
