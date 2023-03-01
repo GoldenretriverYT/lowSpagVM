@@ -16,7 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{6E
 		SimpleTest.asm = SimpleTest.asm
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebuggingVM", "DebuggingVM\DebuggingVM.csproj", "{3B458ADA-D746-49DB-A694-5F07D14C2F4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebuggingVM", "DebuggingVM\DebuggingVM.csproj", "{3B458ADA-D746-49DB-A694-5F07D14C2F4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libLowSpagAssembler", "libLowSpagAssembler\libLowSpagAssembler.csproj", "{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{3B458ADA-D746-49DB-A694-5F07D14C2F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B458ADA-D746-49DB-A694-5F07D14C2F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B458ADA-D746-49DB-A694-5F07D14C2F4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

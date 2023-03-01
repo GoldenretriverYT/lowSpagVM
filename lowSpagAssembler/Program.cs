@@ -1,4 +1,6 @@
-﻿namespace lowSpagAssembler
+﻿using libLowSpagAssembler;
+
+namespace lowSpagAssembler
 {
     public static class Program
     {
@@ -17,23 +19,9 @@
                 return;
             }
 
-            var reader = new InstructionReader(File.ReadAllText(args[0]));
+            Assembler assembler = new(File.ReadAllText(args[0]));
 
-            var insts = reader.ReadInstructions();
-
-            byte[] constsOffset = BitConverter.GetBytes(reader.TotalConstantSize + 4); // Add SKIP CONSTANTS jmp instructions
-            var constsOffsetInstruction = new Instruction(LowSpagVM.Common.InstructionType.JMP, new byte[] { constsOffset[0], constsOffset[1], 0 });
-            insts.Insert(0, constsOffsetInstruction);
-
-            var output = new byte[insts.Sum((el) => el.GetEmittedSize())];
-            var off = 0;
-
-            foreach (var inst in insts)
-            {
-                off += inst.Emit(output, off);
-            }
-
-            File.WriteAllBytes(args[1], output);
+            File.WriteAllBytes(args[1], assembler.Assemble());
         }
     }
 }
