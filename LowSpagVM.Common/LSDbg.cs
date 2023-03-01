@@ -9,7 +9,7 @@ namespace LowSpagVM.Common {
     public class LSDbg {
         public static void WriteLine(string l) {
 #if DEBUG
-            Debug.WriteLine(l);
+            //Debug.WriteLine(l);
 #endif
         }
     }
