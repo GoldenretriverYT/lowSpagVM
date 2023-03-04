@@ -109,10 +109,50 @@ namespace libLowSpagAssembler
             var instruction = parts[0];
             var args = line.Substring(instruction.Length).Split(',', StringSplitOptions.TrimEntries);
 
-            if(!Enum.TryParse<InstructionType>(instruction.ToUpperInvariant(), out var instType)) throw new Exception("Parsing failure: Unknown instruction type");
+            var instType = TryParseInstructionType(instruction.ToUpperInvariant());
 
             return InstructionTypeParser.ParseArguments(instType, (parts.Length > 1 ? args : new string[0]), reader);
         }
+
+        #region Cosmos Compatibility
+        public InstructionType TryParseInstructionType(string inst) {
+            switch(inst) {
+                case "NOP": return InstructionType.NOP;
+
+                // Arithmetic 0x1?
+                case "ADD": return InstructionType.ADD;
+                case "SUB": return InstructionType.SUB;
+                case "MUL": return InstructionType.MUL;
+                case "DIV": return InstructionType.DIV;
+                case "MOD": return InstructionType.MOD;
+
+                // Flow 0x2?
+                case "JMPIZ": return InstructionType.JMPIZ;
+                case "SKPEQU": return InstructionType.SKPEQU;
+                case "JMP": return InstructionType.JMP;
+                case "BREAK": return InstructionType.BREAK;
+
+                // Data 0x3?
+                case "STR": return InstructionType.STR;
+                case "LD": return InstructionType.LD;
+                case "MEMSTR": return InstructionType.MEMSTR;
+                case "STRBYTE": return InstructionType.STRBYTE;
+
+                case "MPTR_INC": return InstructionType.MPTR_INC;
+                case "MPTR_DEC": return InstructionType.MPTR_DEC;
+                case "MPTR_SET": return InstructionType.MPTR_SET;
+                case "MPTR_SETREG": return InstructionType.MPTR_SETREG;
+
+                // Special Instructions, 0x7? (required), 0x8? (impl. optional)
+                case "PRINTN": return InstructionType.PRINTN;
+                case "PRINTA": return InstructionType.PRINTA;
+                    
+                case "SYSCALL": return InstructionType.SYSCALL;
+
+                default: throw new Exception($"Parsing failure: Unknown instruction type '{inst}'");
+            }
+        }
+        #endregion
 
         private int RoundUp(int n, int m) {
             return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m;
