@@ -45,13 +45,16 @@ namespace libLowSpagAssembler
 
                     switch(constType) {
                         case "STR": {
-                            string dataStr = string.Join(' ', args.Skip(2));
+                            var stringArgs = args.Skip(2);
+                            string dataStr = Join(stringArgs, ' '); // cosmos-compat branch can not use string.Join
+
                             byte[] data = Encoding.ASCII.GetBytes(dataStr + '\0');
                             ushort size = (ushort)RoundUp(data.Length, 4);
 
                             byte[] finalData = new byte[size];
                             Buffer.BlockCopy(data, 0, finalData, 0, data.Length);
 
+                            Console.WriteLine("Adding new constant " + dataStr + " of size " + size + " at offset " + offset);
                             var inst = new Instruction(InstructionType.NOP, finalData, true); 
 
                             Constants[args[1]] = (ushort)(offset);
@@ -156,6 +159,18 @@ namespace libLowSpagAssembler
 
         private int RoundUp(int n, int m) {
             return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m;
+        }
+
+
+        private string Join(IEnumerable<string> strings, char separator) {
+            var sb = new StringBuilder();
+            foreach (var str in strings) {
+                sb.Append(str);
+                sb.Append(separator);
+            }
+
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
         }
     }
 }

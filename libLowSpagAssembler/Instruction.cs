@@ -16,6 +16,7 @@ namespace libLowSpagAssembler
 
         public Instruction(InstructionType type, byte[] data, bool isRawData = false)
         {
+            Console.WriteLine("Creating " + type + " " + data[0] + " " + data[1] + " " + data[2] + "; rawData = " + isRawData);
             this.Type = type;
             this.Data = data;
             this.IsRawData = isRawData;
@@ -31,7 +32,7 @@ namespace libLowSpagAssembler
         public int Emit(byte[] dest, int addr)
         {
             if (!IsRawData) {
-                Console.WriteLine($"Emitting {Type} {Data[0]} {Data[1]} {Data[2]} at {addr}");
+                //Console.WriteLine($"Emitting {Type} {Data[0]} {Data[1]} {Data[2]} at {addr}");
                 dest[addr] = (byte)Type;
                 dest[addr + 1] = Data[0];
                 dest[addr + 2] = Data[1];
@@ -44,6 +45,7 @@ namespace libLowSpagAssembler
         }
 
         public int GetEmittedSize() {
+            Console.WriteLine("Inst data size " + Data.Length);
             return IsRawData ? Data.Length : 4;
         }
     }
