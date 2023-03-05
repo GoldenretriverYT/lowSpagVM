@@ -18,7 +18,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{6E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DebuggingVM", "DebuggingVM\DebuggingVM.csproj", "{3B458ADA-D746-49DB-A694-5F07D14C2F4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libLowSpagAssembler", "libLowSpagAssembler\libLowSpagAssembler.csproj", "{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "libLowSpagAssembler", "libLowSpagAssembler\libLowSpagAssembler.csproj", "{6BCDE0E0-30A5-4896-BBFD-F193BEB4446D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Projektmappenelemente", "{25DAF3F6-5D82-4181-8FDA-5D421C6F2FA7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

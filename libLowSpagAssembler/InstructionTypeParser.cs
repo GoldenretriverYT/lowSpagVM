@@ -112,6 +112,7 @@ namespace libLowSpagAssembler
             switch(arg.ToLowerInvariant())
             {
                 case "[arr]": return 15; // AR(ITHMETIC) R(ESULT) (REGISTER)
+                case "[res]": return 14; // RESULT REGISTER (used by some instructions and syscalls)
             }
 
             throw new Exception("Expected valid register");

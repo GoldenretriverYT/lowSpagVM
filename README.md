@@ -24,11 +24,21 @@ Memory addresses can be manually written too. Example:
 Since the MemoryPointer is a uint16, the maximum memory address is 0xFFFF (65535). This means that you can only access 64KB of memory. The VM included in here allocates 32KB of memory by default.
 
 There are 16 registers. 15 is the **Ar**itmetic **R**esult Register but can obviously be manually written anyways. For registers with aliases, you can use `[ALIAS]` to reference it. Example: `[ARR]`
-Technically, up to 255 registers could be supported, but the assembler will not allow you to use more than 16 as most implementations of lowSpag only allocate 16 registers.
-
+Technically, up to 255 registers could be supported, but the assembler will not allow you to use more than 16 as most implementations of lowSpag only allocate 16 registers.<br>
+<br>
+Aliases:
+  - `[ARR]` - Arithmetic Result Register; references register 15
+  - `[RES]` - Result Register (used by syscalls); references register 14
+  
 ### Syscalls
 There is a syscall instruction. Whilst this is a 0x8_ instruction and therefore not required to be implemented.<br>
-Syscall ids are also not "standardized", but following are recommend (if not implemented, these calls should be ignored and not cause an error):<br>
- - 0x00: SetConsoleForegroundColor (0-15) - Only to affect the next characters printed
- - 0x01: SetConsoleBackgroundColor (0-15) - Only to affect the next characters printed
- - 0x02: PrintString - Prints a string from memory at memPtr until null byte
+Syscall ids are also not "standardized", but following are recommend (if not implemented, ignore these calls but set [RES] to 0):<br>
+
+ | Id | Description | Arguments | Return value | Support within this VM impl | Supporting within DebuggingVM
+ | --- | --- | --- | --- | --- | --- |
+ | 0x00 | Exit the program | None | nothing | Yes | Yes |
+ | 0x01 | Print a string from memory at MEMPTR | None | Amount of printed chars into [RES] | Yes | Yes |
+ | 0x02 | Print a character from memory at MEMPTR | None | nothing | Yes | Yes |
+ | 0x03 | Print a character from args | b1: char | nothing | Yes | Yes |
+ | 0x04 | Reads a key from keyboard | None | Pressed key ASCII into [RES] | Yes | Planned |
+ | 0x05 | Reads a string from keyboard to MEMPTR (warning: overrides memory!) | None | Amount of read chars into [RES] | Yes | Planned |
