@@ -31,6 +31,8 @@ Aliases:
   - `[RES]` - Result Register (used by syscalls); references register 14
   
 ### Syscalls
+> Note: These are not really syscalls as they have nothing to do with the host OS, i just didnt want to call them "special subinstructions" or something like that
+
 There is a syscall instruction. Whilst this is a 0x8_ instruction and therefore not required to be implemented.<br>
 Syscall ids are also not "standardized", but following are recommend (if not implemented, ignore these calls but set [RES] to 0):<br>
 
