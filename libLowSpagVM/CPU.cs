@@ -68,15 +68,53 @@ namespace libLowSpagVM
 
         public void Cycle()
         {
-            if (!Instructions.CPUInstructions.ContainsKey(CurrentInstructionType))
+            if (!Instructions.CPUInstructions.ContainsKey(GetInstructionName(CurrentInstructionType)))
             {
-                throw new Exception("VM Fatal: Instruction " + CurrentInstructionType + " is not implemented.");
+                throw new Exception("VM Fatal: Instruction " + GetInstructionName(CurrentInstructionType) + " is not implemented.");
             }
 
-            if(CurrentInstructionType != InstructionType.NOP) LSDbg.WriteLine($"Executing {CurrentInstructionType} : [{string.Join(", ", CurrentInstructionBytes)}]");
-
-            Instructions.CPUInstructions[CurrentInstructionType].Execute(this, CurrentInstructionBytes);
+            Instructions.CPUInstructions[GetInstructionName(CurrentInstructionType)].Execute(this, CurrentInstructionBytes);
         }
+
+        #region Cosmos Compatibility
+        public string GetInstructionName(InstructionType inst) {
+            switch (inst) {
+                case InstructionType.NOP: return "NOP";
+
+                // Arithmetic 0x1?
+                case InstructionType.ADD: return "ADD";
+                case InstructionType.SUB: return "SUB";
+                case InstructionType.MUL: return "MUL";
+                case InstructionType.DIV: return "DIV";
+                case InstructionType.MOD: return "MOD";
+
+                // Flow 0x2?
+                case InstructionType.JMPIZ: return "JMPIZ";
+                case InstructionType.SKPEQU: return "SKPEQU";
+                case InstructionType.JMP: return "JMP";
+                case InstructionType.BREAK:  return "BREAK";
+
+                // Data 0x3?
+                case InstructionType.STR: return "STR";
+                case InstructionType.LD: return "LD";
+                case InstructionType.MEMSTR: return "MEMSTR";
+                case InstructionType.STRBYTE: return "STRBYTE";
+                    
+                case InstructionType.MPTR_INC: return "MPTR_INC";
+                case InstructionType.MPTR_DEC: return "MPTR_DEC";
+                case InstructionType.MPTR_SET: return "MPTR_SET";
+                case InstructionType.MPTR_SETREG: return "MPTR_SETREG";
+
+                // Special Instructions, 0x7? (required), 0x8? (impl. optional)
+                case InstructionType.PRINTN: return "PRINTN";
+                case InstructionType.PRINTA: return "PRINTA";
+
+                case InstructionType.SYSCALL: return "SYSCALL";
+
+                default: throw new Exception($"Parsing failure: Unknown instruction type '{inst}'");
+            }
+        }
+        #endregion
 
         public void IncreasePC(ushort v)
         {

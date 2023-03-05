@@ -14,36 +14,36 @@ namespace libLowSpagVM
         public static Action<string> Write { get; set; } = Console.Write;
 
 
-        public static Dictionary<InstructionType, Instruction> CPUInstructions = new Dictionary<InstructionType, Instruction>()
+        public static Dictionary<string, Instruction> CPUInstructions = new Dictionary<string, Instruction>()
         {
-            { InstructionType.NOP, new(InstNop, InstructionType.NOP) },
+            { "NOP", new(InstNop, InstructionType.NOP) },
 
             // arithmetic
-            { InstructionType.ADD, new(InstAdd, InstructionType.ADD) },
-            { InstructionType.SUB, new(InstSub, InstructionType.SUB) },
-            { InstructionType.MUL, new(InstMul, InstructionType.MUL) },
-            { InstructionType.DIV, new(InstDiv, InstructionType.DIV) },
-            { InstructionType.MOD, new(InstMod, InstructionType.MOD) },
+            { "ADD", new(InstAdd, InstructionType.ADD) },
+            { "SUB", new(InstSub, InstructionType.SUB) },
+            { "MUL", new(InstMul, InstructionType.MUL) },
+            { "DIV", new(InstDiv, InstructionType.DIV) },
+            { "MOD", new(InstMod, InstructionType.MOD) },
 
             // flow
-            { InstructionType.SKPEQU, new(InstSkipEqu, InstructionType.SKPEQU) },
-            { InstructionType.JMP, new(InstJmp, InstructionType.JMP) },
-            { InstructionType.BREAK, new(InstBreak, InstructionType.BREAK) },
-
+            { "SKPEQU", new(InstSkipEqu, InstructionType.SKPEQU) },
+            { "JMP", new(InstJmp, InstructionType.JMP) },
+            { "BREAK", new(InstBreak, InstructionType.BREAK) },
+            
             // data
-            { InstructionType.STR, new(InstStr, InstructionType.STR) },
-            { InstructionType.LD, new(InstLd, InstructionType.LD) },
-            { InstructionType.STRBYTE, new(InstStrByte, InstructionType.STRBYTE) },
-            { InstructionType.MPTR_INC, new(InstMptrInc, InstructionType.MPTR_INC) },
-            { InstructionType.MPTR_DEC, new(InstMptrDec, InstructionType.MPTR_DEC) },
-            { InstructionType.MPTR_SET, new(InstMptrSet, InstructionType.MPTR_SET) },
-            { InstructionType.MPTR_SETREG, new(InstMptrSetReg, InstructionType.MPTR_SETREG) },
+            { "STR", new(InstStr, InstructionType.STR) },
+            { "LD", new(InstLd, InstructionType.LD) },
+            { "STRBYTE", new(InstStrByte, InstructionType.STRBYTE) },
+            { "MPTR_INC", new(InstMptrInc, InstructionType.MPTR_INC) },
+            { "MPTR_DEC", new(InstMptrDec, InstructionType.MPTR_DEC) },
+            { "MPTR_SET", new(InstMptrSet, InstructionType.MPTR_SET) },
+            { "MPTR_SETREG", new(InstMptrSetReg, InstructionType.MPTR_SETREG) },
 
             // special
-            {InstructionType.PRINTN, new(InstPrintNumber, InstructionType.PRINTN) },
-            {InstructionType.PRINTA, new(InstPrintAscii, InstructionType.PRINTA) },
+            {"PRINTN", new(InstPrintNumber, InstructionType.PRINTN) },
+            {"PRINTA", new(InstPrintAscii, InstructionType.PRINTA) },
 
-            {InstructionType.SYSCALL, new(InstSyscall, InstructionType.SYSCALL) }
+            {"SYSCALL", new(InstSyscall, InstructionType.SYSCALL) }
         };
         
         public static void InstNop(CPU cpu, byte[] instruction)

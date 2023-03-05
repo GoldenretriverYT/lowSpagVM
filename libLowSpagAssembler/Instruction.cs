@@ -45,7 +45,7 @@ namespace libLowSpagAssembler
         }
 
         public int GetEmittedSize() {
-            Console.WriteLine("Inst data size " + Data.Length);
+            if(IsRawData) Console.WriteLine("RawData Inst data size " + Data.Length);
             return IsRawData ? Data.Length : 4;
         }
     }

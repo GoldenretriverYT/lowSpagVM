@@ -62,6 +62,7 @@ namespace libLowSpagAssembler
                             offset += size;
                             TotalConstantSize += size;
                             output.Add(inst);
+                            Console.WriteLine("Added constant israwdata: " + output[output.Count - 1].IsRawData);
                             break;
                         }
 
@@ -99,6 +100,10 @@ namespace libLowSpagAssembler
                 output.Add(inst);
             }
 
+            foreach (var inst in output) {
+                Console.WriteLine("> inst israwdata: " + inst.IsRawData);
+            }
+            
             return output;
         }
 

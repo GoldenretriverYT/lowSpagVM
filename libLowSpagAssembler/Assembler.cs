@@ -19,7 +19,11 @@
             var constsOffsetInstruction = new Instruction(LowSpagVM.Common.InstructionType.JMP, new byte[] { constsOffset[0], constsOffset[1], 0 });
             insts.Insert(0, constsOffsetInstruction);
 
-            var size = insts.Sum((el) => el.GetEmittedSize());
+            var size = 0;
+
+            foreach (var inst in insts) {
+                size += inst.GetEmittedSize();
+            }
 
             Console.WriteLine("Creating output buffer of size " + size);
             var output = new byte[size];
