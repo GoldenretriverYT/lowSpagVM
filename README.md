@@ -1,6 +1,9 @@
 # lowSpagVM
 lowSpag is an assembly-like language except that it doesn't compile into machine code
 
+### Branch: cosmos-compat
+Compatibility with Cosmos by replacing unsupported methods within the assembler and the VM
+
 ### Goals
 The goal is to represent assembly languages and having a working assembler and VM for it. I guess you could kinda compare it with MSIL except that MSIL has actual good languages you can use to target it. (and MSIL is faster, lol)
 
