@@ -7,6 +7,10 @@ The goal is to represent assembly languages and having a working assembler and V
 ### Performance
 Since it runs in a "VM" written in C# which in itself runs in a "VM" (with JIT Compilation), its definitely slower than machine code.
 
+### Native
+Yes, you can run lowSpag on bare metal. Whilst not everything is supporting in lowSpagNative and its pretty clunky to work with, it does at least work.
+Look in the [lowSpagNative repo](https://github.com/GoldenretriverYT/lowSpagNative) for more information.
+
 ### Docs
 There are no docs as of now. Some basics are:<br>
 `myLabel:` defines a label, to get the memory address of it use `$myLabel`
