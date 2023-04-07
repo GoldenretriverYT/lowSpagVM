@@ -31,12 +31,14 @@ namespace libLowSpagAssembler
         public int Emit(byte[] dest, int addr)
         {
             if (!IsRawData) {
-                Console.WriteLine($"Emitting {Type} {Data[0]} {Data[1]} {Data[2]} at {addr}");
+                Console.WriteLine($"Emitting {Type} {Data[0]} {Data[1]} {Data[2]} {Data[3]} at {addr}");
                 dest[addr] = (byte)Type;
                 dest[addr + 1] = Data[0];
                 dest[addr + 2] = Data[1];
                 dest[addr + 3] = Data[2];
-                return 4;
+                dest[addr + 4] = Data[3];
+
+                return 5;
             }else {
                 Buffer.BlockCopy(Data, 0, dest, addr, Data.Length);
                 return Data.Length;

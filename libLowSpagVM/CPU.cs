@@ -6,19 +6,18 @@ namespace libLowSpagVM
     public class CPU
     {
         public const int REGISTER_COUNT = 16;
-        public const ushort MEMORY_SIZE = 32767;
+        public const uint MEMORY_SIZE = 32767;
 
         public Memory Memory { get; set; }
-        public ushort MemoryPtr { get; set; } = 0;
         public byte[] Registers { get; init; }
 
         // Events that can be listened to by a debugger
-        public Action OnBreakpoint { get; set; }
+        /*public Action OnBreakpoint { get; set; }
         public Action AfterCycle { get; set; }
-        public Action ExecutionDone { get; set; }
+        public Action ExecutionDone { get; set; }*/
 
         public InstructionType CurrentInstructionType => (InstructionType)Memory.Read(pc);
-        public byte[] CurrentInstructionBytes => Memory.Read(pc, 4);
+        public byte[] CurrentInstructionBytes => Memory.Read(pc, 5);
         public uint ProgramCounter => pc;
 
 
@@ -27,9 +26,9 @@ namespace libLowSpagVM
 
         public static CPU Load(byte[] file)
         {
-            if(file.Length % 4 != 0)
+            if(file.Length % 5 != 0)
             {
-                throw new Exception("Corrupted executable. Not padded to 4 bytes.");
+                throw new Exception("Corrupted executable. Not padded to 5 bytes.");
             }
 
             if (file.Length > MEMORY_SIZE) {
@@ -52,18 +51,18 @@ namespace libLowSpagVM
         {
             while(true)
             {
-                if (pc+4 >= MEMORY_SIZE) break;
+                if (pc+5 >= MEMORY_SIZE) break;
                 Cycle();
-                AfterCycle?.Invoke();
+                //AfterCycle?.Invoke();
 
                 if (shouldBreak) {
-                    OnBreakpoint?.Invoke();
+                    //OnBreakpoint?.Invoke();
                     shouldBreak = false;
                     return; // Stop execution until Run() is called again
                 }
             }
 
-            ExecutionDone?.Invoke();
+            //ExecutionDone?.Invoke();
         }
 
         public void Cycle()

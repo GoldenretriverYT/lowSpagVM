@@ -10,9 +10,9 @@ namespace libLowSpagAssembler
     public class InstructionReader
     {
         public string Code { get; }
-        public Dictionary<string, ushort> Labels { get; } = new();
-        public Dictionary<string, ushort> Constants { get; } = new();
-        public ushort TotalConstantSize = 0;
+        public Dictionary<string, uint> Labels { get; } = new();
+        public Dictionary<string, uint> Constants { get; } = new();
+        public uint TotalConstantSize = 0;
 
         public InstructionReader(string code)
         {
@@ -24,7 +24,7 @@ namespace libLowSpagAssembler
             var output = new List<Instruction>();
 
             var lines = Code.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            ushort offset = 4; // 4 as the code always starts with a JMP that skips constants
+            uint offset = 5; // 5 as the code always starts with a JMP that skips constants
 
             // Read labels and constants first
             foreach (var line in lines)
@@ -47,14 +47,14 @@ namespace libLowSpagAssembler
                         case "STR": {
                             string dataStr = string.Join(' ', args.Skip(2));
                             byte[] data = Encoding.ASCII.GetBytes(dataStr + '\0');
-                            ushort size = (ushort)RoundUp(data.Length, 4);
+                            uint size = (uint)RoundUp(data.Length, 5);
 
                             byte[] finalData = new byte[size];
                             Buffer.BlockCopy(data, 0, finalData, 0, data.Length);
 
                             var inst = new Instruction(InstructionType.NOP, finalData, true); 
 
-                            Constants[args[1]] = (ushort)(offset);
+                            Constants[args[1]] = (uint)(offset);
 
                             offset += size;
                             TotalConstantSize += size;
@@ -78,7 +78,7 @@ namespace libLowSpagAssembler
                 if (line.EndsWith(":"))
                 {
                     var label = line.Split(":")[0];
-                    Labels.Add(label, (ushort)(offset));
+                    Labels.Add(label, (uint)(offset));
                     continue;
                 }
 

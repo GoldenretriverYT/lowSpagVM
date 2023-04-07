@@ -1,10 +1,18 @@
 ﻿namespace LowSpagVM.Common
 {
+    // v2 implementation notice: do not use registers, use stack (32-bit) instead
     public enum InstructionType : byte
     {
         NOP = 0x00,
 
         #region Arithmetics 0x1?
+        /// <summary>
+        /// Flow:
+        ///   Add topmost value of stack to the next value of the stack. Pop those two values from the stack.
+        ///   Push the result to the stack.
+        /// 
+        /// The flow is the same across the next 5 instructions.
+        /// </summary>
         ADD = 0x10,
         SUB = 0x11,
         DIV = 0x13,
@@ -14,90 +22,69 @@
         #endregion
 
         #region Flow 0x2?
+        /// <summary>
+        /// Operand: Memory Address (32 bit)
+        /// Flow:
+        ///   Branches unconditionally.
+        /// </summary>
+        BR = 0x20,
 
         /// <summary>
-        /// Jumps if the register is 0. Bytes: JMPIZ REG1 MEM_ADDR(2b)
+        /// Operand: Memory Address (32 bit)
+        /// Flow:
+        ///   Branches if topmost stack value is 0. Pops the value from the stack.
         /// </summary>
-        JMPIZ = 0x20,
+        BRIZ = 0x21,
 
         /// <summary>
-        /// Skips next instruction if two register are equal. Bytes: SKPEQU REG1 REG2
-        /// <para>Usage would be: </para>
-        /// <para>SKPEQU 1 2 -- If they are equal, continue, else go to error handler</para>
-        /// <para>JMP 1000 -- They are not equal, go to error handler</para>
+        /// Operand: Memory Address (32 bit)
+        /// Flow:
+        ///   Branches if topmost stack value is not 0. Pops the value from the stack.
         /// </summary>
-        SKPEQU = 0x21,
-
-        /// <summary>
-        /// Jumps to address. Bytes: JMP MEM_ADDR(2b)
-        /// </summary>
-        JMP = 0x22,
-
-        /// <summary>
-        /// Halts execution and triggers a breakpoint if debugger is attached.
-        /// If no debugger is attached, execution will never resume.
-        /// </summary>
-        BREAK = 0x2F,
-
+        BRINZ = 0x22,
         #endregion
 
         #region Data 0x3?
-
-        // data
         /// <summary>
-        /// Writes from register to memory. Bytes: STR REG1
+        /// Operand: Memory Address (32 bit)
+        /// Flow:
+        ///   Loads a 32-bit value from the specified memory address and pushes it to the stack.
         /// </summary>
-        STR = 0x30,
-        /// <summary>
-        /// Writes from memory to register. Bytes: LD REG1
-        /// </summary>
-        LD = 0x31,
-        /// <summary>
-        /// Stores value to memory. Bytes: MEMSTR VAL
-        /// </summary>
-        MEMSTR = 0x32,
-        /// <summary>
-        /// Stores value to register. Bytes: STRBYTE VAL REG1
-        /// </summary>
-        STRBYTE = 0x33,
+        LOAD32 = 0x30,
 
         /// <summary>
-        /// Increases the memory pointer by 1
+        /// Operand: Memory Address (32 bit)
+        /// Flow:
+        ///   Stores a 32-bit value from the top of the stack to the specified memory address.
         /// </summary>
-        MPTR_INC = 0x34,
-        /// <summary>
-        /// Decreases the memory pointer by 1
-        /// </summary>
-        MPTR_DEC = 0x35,
-        /// <summary>
-        /// Sets the memory pointer. Bytes: MPTR_SET (memory addr (2b))
-        /// </summary>
-        MPTR_SET = 0x36,
-        /// <summary>
-        /// Sets the memory pointer from registers. Bytes: MPTR_SETREG REG1(LSB) REG2(MSB) 
-        /// </summary>
-        MPTR_SETREG = 0x37,
+        STORE32 = 0x31,
 
+        /// <summary>
+        /// Operand: 32-bit value
+        /// Flow:
+        ///   Push the specified 32-bit value to the stack.
+        /// </summary>
+        PUSH32 = 0x32,
+
+        /// <summary>
+        /// Flow:
+        ///   Pop a 32-bit value from the stack.
+        /// </summary>
+        POP32 = 0x33,
+
+        /// <summary>
+        /// Flow:
+        ///   Duplicates the topmost value of the stack. Pushes the duplicated value to the stack.
+        /// </summary>
+        DUP32 = 0x34,
         #endregion
 
         #region Special Instructions 0x7? (required), 0x8? (implementation optional)
         /// <summary>
-        /// Prints the numeric value of a register. Bytes: PRNTN REG1
+        /// Flow:
+        ///   Prints the topmost value of the stack as ASCII character. Pops the value from the stack.
         /// </summary>
-        PRINTN = 0x70,
-        /// <summary>
-        /// Prints the value converted to an ASCII char of a register. Bytes: PRNTA REG1
-        /// </summary>
-        PRINTA = 0x71,
-        
-        /// <summary>
-        /// SysCall to the VM to do something. Bytes: SYSCALL SYSCALL_ID REGARG1 REGARG2
-        /// Warning: The implementation is not required to support this instruction. Additionally, syscalls vary from VM to VM.
-        /// </summary>
-        SYSCALL = 0x80,
-        #endregion
-
-        #region Compile-Time Instructions 0xF?
+        PRINT8 = 0x70,
         #endregion
     }
 }
