@@ -111,7 +111,7 @@ namespace libLowSpagVM
 
                 case InstructionType.SYSCALL: return "SYSCALL";
 
-                default: throw new Exception($"Parsing failure: Unknown instruction type '{inst}'");
+                default: throw new Exception($"Parsing failure: Unknown instruction type");
             }
         }
         #endregion
